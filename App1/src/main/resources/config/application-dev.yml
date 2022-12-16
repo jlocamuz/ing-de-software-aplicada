@@ -24,7 +24,7 @@ spring:
   devtools:
     restart:
       enabled: true
-      additional-exclude: static/**
+      additional-exclude: static/**,.h2.server.properties
     livereload:
       enabled: false # we use Webpack dev server + BrowserSync for livereload
   jackson:
@@ -32,17 +32,16 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/App1?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
+    url: jdbc:h2:file:./target/h2db/db/jhipster;DB_CLOSE_DELAY=-1;MODE=LEGACY
+    username: jhipster
     password:
     hikari:
       poolName: Hikari
       auto-commit: false
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
+  h2:
+    console:
+      # disable spring boot built-in h2-console since we start it manually with correct configuration
+      enabled: false
   jpa:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
@@ -74,7 +73,7 @@ jhipster:
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
-    allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:9060,https://localhost:9060'
+    allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:4200,https://localhost:4200'
     # Enable CORS when running in GitHub Codespaces
     allowed-origin-patterns: 'https://*.githubpreview.dev'
     allowed-methods: '*'
@@ -86,7 +85,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: NGY4ODk2NmFhMTUwMDcyNjNmODRlOTA2ZmE4OGMwMDMwMzBmZTU4OGMwYzQ0OTU2YTIwMDA3YjdmNDk2ZWM5YmMzMmY0ZTgyYjJiMzA5ZmEwMTIxNmE5MjgzYzYzZWI2OTNiZTA0NzUxMDI3NzVlMWZjYzdiODI1YzQ1MDYxZGY=
+        base64-secret: NWMzNTYyNmQ5NDFiNjBjN2VlZDQyYzI2YmExNjcyYzZlMmViZWExMDBhZjg5OWNkNmQ0ZmY1NmY0OTI0OTA4Mjk4MmI0NWY2MjEwYzU1ZjA1MDZjMjk0OTk1NzM1NGZmZGZjYTY2MzkyYmU1NzNhYWVhZDI0MDYxMThiMTVhODY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

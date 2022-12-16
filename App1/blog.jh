@@ -1,5 +1,6 @@
 application {
   config {
+  	prodDatabaseType mysql
   }
   entities *
 }
